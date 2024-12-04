@@ -21,8 +21,7 @@ This project is a Gym/School Access and Attendance System built entirely using P
 ## How to Use
 ### 1. Clone the repository:
 ```bash
-git repo clone SonuSubhadip/Qr_Attendance
-cd Qr_Attendance
+git clone https://github.com/SonuSubhadip/Qr_Attendance.git
 ```
 ### 2 Requirements Python Dependencies
 Install required libraries using
