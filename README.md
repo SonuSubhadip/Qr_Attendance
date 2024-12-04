@@ -46,6 +46,9 @@ http://127.0.0.1:5000/
 - Download QR codes
 - Track attendance
 
+## Important:
+Installed MICROSOFT VISUAL C++ REDISTRIBUTABLE FOR VISUAL STUDIO 2013 
+
 ## Screenshots:
 ![Screenshot (51)](https://github.com/user-attachments/assets/b7536da5-1861-421d-b610-fc2ec843bdf8)
 
