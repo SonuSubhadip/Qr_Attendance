@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-..." crossorigin="anonymous" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <header>
+        <button class="openbtn" id="openbtn" onclick="openSidebar()">&#9776;</button>
+        <a href="/" class="logo">[LOGO]</a>
+        <ul>
+            <li><a href="/signup">SignUp</a></li>
+            <li><a href="/logout" id="log">Logout</a></li>
+        </ul>
+    </header>
+
+    <div id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
+        <br>
+        <a href="/">Home</a>
+        <a href="/scanqr" target="_blank">Scan</a>
+        <a href="/signup">SignUp</a>
+        <a href="/logout" id="log">Logout</a>
+    </div>
+
+    <div class="main">
+        <h2 style="text-align: center;">User Management</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div id="flash-overlay">
+            <ul class="flashes">
+                {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {% endwith %}
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>USERID</th>
+                    <th>USERNAME</th>
+                    <th>PASSWORD</th>
+                    <th>TOOLS</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ user.Id }}</td>
+                    <td>{{ user.user }}</td>
+                    <td>{{ '*' * user.password|length }}</td> <!-- Display asterisks for password -->
+                    <td>
+                        <button onclick="showPasswordModal('{{ user.Id }}', '{{ user.user }}', '{{ user.password }}')"
+                            class="button">EDIT</button>
+                        <button onclick="openDeleteModal('{{ user.Id }}')" class="button" id="del">DELETE</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Password Confirmation Modal -->
+        <div id="passwordModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('passwordModal')">&times;</span>
+                <h2>Password Confirmation</h2>
+                <input type="hidden" id="passwordUserId">
+                <label for="password">Enter Password:</label>
+                <input type="password" id="password" name="password"><br><br>
+                <button onclick="confirmPassword()" class="button"
+                    style="float: right; margin-top: -30px;">Confirm</button>
+            </div>
+        </div>
+
+        <!-- Edit Modal -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('editModal')">&times;</span>
+                <h2>EDIT</h2>
+                <input type="text" id="editId" name="id" readonly
+                    style="border: transparent; font-weight: bold; font-size: 20px;">
+                <form id="editForm" action="/edit_user" method="POST">
+                    <input type="hidden" id="editId" name="id">
+                    <label for="editUsername">Username:</label>
+                    <input type="text" id="editUsername" name="username"><br><br>
+                    <label for="editPassword">Password:</label>
+                    <input type="text" id="editPassword" name="password"><br><br>
+                    <button type="submit" class="button" style="float: right; margin-top: -20px;">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Delete Modal -->
+        <div id="deleteModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('deleteModal')">&times;</span>
+                <h2>Password Confirmation</h2>
+                <form id="deleteForm" action="/delete_user" method="POST">
+                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <label for="deleteId" style="font-weight: bold; font-size: 18px; margin-right: 10px;">User
+                            ID:</label>
+                        <input type="text" id="deleteId" name="id" readonly
+                            style="border: transparent; font-weight: bold; font-size: 18px; flex: 1; margin-top: 12px;">
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <label for="deletePassword"
+                            style="font-weight: bold; font-size: 18px; margin-right: 10px;">Password:</label>
+                        <input type="password" id="deletePassword" name="password" placeholder="Enter Password">
+                    </div>
+                    <br><br>
+                    <button type="submit" id="del" style="float: right; margin-top: -25px;" class="button">Delete
+                        User</button>
+                </form>
+            </div>
+        </div>
+
+
+
+        <script>
+            let currentUserId = '';
+            let currentUsername = '';
+            let currentPassword = '';
+
+            // JavaScript to hide flash messages after a few seconds
+            setTimeout(function () {
+                var flashOverlay = document.getElementById('flash-overlay');
+                if (flashOverlay) {
+                    flashOverlay.style.display = 'none';
+                }
+            }, 5000); // 5000 milliseconds = 5 seconds
+
+            function openSidebar() {
+                document.getElementById("openbtn").style.display = "none";
+                document.getElementById("sidebar").style.width = "250px";
+                document.getElementById("main").style.marginLeft = "250px";
+            }
+
+            function closeSidebar() {
+                document.getElementById("openbtn").style.display = "block";
+                document.getElementById("sidebar").style.width = "0";
+                document.getElementById("main").style.marginLeft = "0";
+            }
+
+            function showPasswordModal(id, username, password) {
+                currentUserId = id;
+                currentUsername = username;
+                currentPassword = password;
+                document.getElementById('passwordUserId').value = id;
+                document.getElementById('passwordModal').style.display = 'block';
+            }
+
+            function confirmPassword() {
+                const enteredPassword = document.getElementById('password').value;
+
+                if (enteredPassword === currentPassword) {
+                    document.getElementById('editId').value = currentUserId;
+                    document.getElementById('editUsername').value = currentUsername;
+                    document.getElementById('editPassword').value = currentPassword;
+                    document.getElementById('editModal').style.display = 'block';
+                    document.getElementById('password').value = '';
+                    closeModal('passwordModal');
+                } else {
+                    document.getElementById('password').value = '';
+                    alert('Incorrect password.');
+                }
+            }
+
+            function openDeleteModal(id) {
+                document.getElementById('deleteId').value = id;
+                document.getElementById('deleteModal').style.display = 'block';
+            }
+
+            function closeModal(modalId) {
+                document.getElementById(modalId).style.display = 'none';
+            }
+
+            window.onclick = function (event) {
+                if (event.target.className === 'modal') {
+                    event.target.style.display = 'none';
+                }
+                var flashOverlay = document.getElementById('flash-overlay');
+                if (flashOverlay) {
+                    flashOverlay.style.display = 'none';
+                }
+            }
+
+        </script>
+</body>
+
+</html>

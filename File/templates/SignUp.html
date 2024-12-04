@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="../static/CSS/SignUp.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+  <div class="signup-container">
+    <form action="/signup" method="POST" class="signup-form">
+      <h2>NEW USER <a href="/" style="text-decoration: none;">
+        <i class="fa fa-home"></i></a></h2>
+      <div class="input-container">
+        <input type="text" name="fullname" id="fullname" placeholder="Full Name" required>
+      </div>
+      <div class="input-container">
+        <input type="number" name="ph" id="ph" placeholder="Phone Number" required>
+      </div>
+      <div class="input-container">
+        <input type="text" id="userIdDisplay" placeholder="User ID" readonly>
+      </div>
+      <div class="input-container">
+        <input type="password" name="password" id="password" placeholder="New Password" required>
+        <span class="toggle-password" onclick="togglePassword()">
+          <i class="fa fa-eye" id="show-password-icon" style="display: none;"></i>
+        </span>
+      </div>
+      <button type="submit">Sign Up</button>
+    </form>
+    <br>
+    <div class="-link">
+      <p>Already have an account? <a href="/login">LOGIN</a></p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <b>Powered by ❤️ Sancs Technology</b>
+  </footer>
+
+  <script>
+    document.getElementById('fullname').addEventListener('input', generateUserId);
+    document.getElementById('ph').addEventListener('input', generateUserId);
+
+    function generateUserId() {
+      const fullname = document.getElementById('fullname').value;
+      const ph = document.getElementById('ph').value;
+
+      if (fullname && ph) {
+        const formData = new FormData();
+        formData.append('fullname', fullname);
+        formData.append('ph', ph);
+
+        fetch('/generate_user_id', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.user_id) {
+            document.getElementById('userIdDisplay').value = data.user_id;
+          }
+        });
+      } else {
+        document.getElementById('userIdDisplay').value = '';
+      }
+    }
+
+    function togglePassword() {
+      var passwordBox = document.getElementById("password");
+      var showPasswordIcon = document.getElementById("show-password-icon");
+
+      if (passwordBox.type === "password") {
+        passwordBox.type = "text";
+        showPasswordIcon.classList.remove("fa-eye");
+        showPasswordIcon.classList.add("fa-eye-slash");
+      } else {
+        passwordBox.type = "password";
+        showPasswordIcon.classList.remove("fa-eye-slash");
+        showPasswordIcon.classList.add("fa-eye");
+      }
+    }
+  </script>
+</body>
+</html>

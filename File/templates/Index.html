@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>QR DASHBOARD</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-..." crossorigin="anonymous" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <header>
+        <button class="openbtn" id="openbtn" onclick="openSidebar()">&#9776;</button>
+        <a href="/" class="logo">[LOGO]</a>
+        <ul>
+            <!-- <li><a href="/">Home</a></li> -->
+            <li><a id="openModal" class="right">Register</a></li>
+            <li><a href="{{ url_for('download') }}">Download</a></li>
+            <!-- <li><a href="/signup">SignUp</a></li>-->
+            <li><a href="/logout" id="log">Logout</a></li>
+        </ul>
+
+    </header>
+
+    <div id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
+        <br>
+        <a href="/">Home</a>
+        <a href="/scanqr" target="_blank">Scan</a>
+        <a href="{{ url_for('download') }}">Download</a>
+        <a href="/signup">SignUp</a>
+        <a href="/users">Users Mange</a>
+        <a href="/logout" id="log">Logout</a>
+    </div>
+
+    <div class="main">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div id="flash-overlay">
+            <ul class="flashes">
+                {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {% endwith %}
+
+
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>User ID</th>
+                    <th>Phone</th>
+                    <th>QR Code</th>
+                    <th>Pay Status</th>
+                    <th>Next Pay</th>
+                    <th>Day's Left</th>
+                    <th>User Status</th>
+                    <th>Attendance</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for username, details in users.items() %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ username }}</td>
+                    <td>{{ details.id }}&nbsp;<a href="{{ url_for('download_user', username=username) }}"><i
+                                class="fas fa-download"></i></a></td>
+                    <td>{{ details.phone }}</td>
+                    <td>
+                        {% if details.active %}
+                        <a href="{{ url_for('download_qr', username=username) }}">
+                            <img src="{{ url_for('static', filename='qrcodes/' ~ username ~ '_Qr.png') }}"
+                                alt="QR Code">
+                        </a>
+                        {% else %}
+                        <img src="{{ url_for('static', filename='qrcodes/' ~ username ~ '_Qr.png') }}" alt="QR Code">
+                        {% endif %}
+                    </td>
+                    <td class="{{ 'active-status' if details.payment else 'inactive-status' }}">
+                        {{ 'PAID' if details.payment else 'UNPAID' }}</td>
+
+
+                    <td>
+                       {{ details.next_pay_date }}
+                      
+                    </td>
+
+                    <td>
+                        {{ details.days_left }}
+                    </td>
+
+
+                    <td class="{{ 'active-status' if details.active else 'inactive-status' }}">
+                        {{ 'Active' if details.active else 'Inactive' }}
+                    </td>
+
+
+                    <td class="attendance-column">
+                        {% if details.attendance %}
+
+                        {{ details.attendance|last }}
+
+                        {% else %}
+                        <strong>No Attendance</strong>
+                        {% endif %}
+                    </td>
+
+                    <!-- <td class="attendance-column">
+                    {% if details.attendance %}
+                        <ul>
+                            {% set start_index = details.attendance|length - 3 %}
+                            {% for i in range(start_index if start_index >= 0 else 0, details.attendance|length) %}
+                                <li>{{ details.attendance[i] }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <strong>No Attendance</strong>
+                    {% endif %}
+                </td> -->
+
+
+                    <td>
+                        {% if details.active and details.payment%}
+                        <a href="{{ url_for('deactivate', username=username) }}" class="button">Deactivate</a>
+                        {% else %}
+                        <a href="{{ url_for('activate', username=username) }}" class="button">Activate</a>
+                        <br><br>
+
+                        <a href="{{ url_for('delete', username=username) }}"
+                            onclick="return confirm('Are you sure you want to delete this user?');" class="button"
+                            id="del">Delete</a>
+
+                        {% endif %}
+                        <br><br>
+                        {% if not details.payment %}
+                        <a href="{{ url_for('paid', username=username) }}" class="button">PAID</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- The Modal -->
+        <dialog id="registerModal">
+            <form action="{{ url_for('register') }}" method="post">
+                <strong><label for="username">Name:</label></strong>
+                <input type="text" id="username" name="username" required>
+                <br>
+                <strong><label for="phone">Phone:</label></strong>
+                <input type="text" id="phone" name="phone" required maxlength="10">
+                <br>
+                <strong><label for="email">Email:</label></strong>
+                <input type="text" id="email" name="email" required>
+                <br>
+                <div class="input-container">
+                    <strong><label for="pay">Payment:</label></strong>
+                    <select id="pay" name="pay" required>
+                        <option value="paid">Paid</option>
+                        <option value="unpaid">Unpaid</option>
+                    </select>
+                </div>
+                <br>
+                <br>
+                <button type="submit">Register</button>
+            </form>
+            <button id="closeModal">×</button>
+        </dialog>
+
+        <!--    <h2>Scan QR Code</h2>-->
+        <!--       <form action="{{ url_for('scanBtn') }}" method="GET">-->
+        <!--        <button type="submit">Scan</button>-->
+        <!--    </form>-->
+
+        <!-- <footer class="footer">
+            <b>Powered by ❤️ Sancs Technology</b>
+        </footer> -->
+    </div>
+
+
+    <script>
+        document.getElementById("phone").addEventListener("input", function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        document.getElementById('openModal').addEventListener('click', function () {
+            document.getElementById('registerModal').showModal();
+        });
+
+        document.getElementById('closeModal').addEventListener('click', function () {
+            document.getElementById('registerModal').close();
+        });
+
+        // JavaScript to hide flash messages after a few seconds
+        setTimeout(function () {
+            var flashOverlay = document.getElementById('flash-overlay');
+            if (flashOverlay) {
+                flashOverlay.style.display = 'none';
+            }
+        }, 5000); // 5000 milliseconds = 5 seconds
+
+        {% for username, details in users.items() %}
+        document.getElementById('openModal_{{ details.id }}').addEventListener('click', function () {
+            // Open the modal and fill the form with the user's details
+        });
+        {% endfor %}
+
+    </script>
+
+    <script>
+        function openSidebar() {
+            document.getElementById("openbtn").style.display = "none";
+            document.getElementById("sidebar").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+
+        }
+
+        function closeSidebar() {
+            document.getElementById("openbtn").style.display = "block";
+            document.getElementById("sidebar").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+        }
+
+        window.onclick = function (event) {
+            var flashOverlay = document.getElementById('flash-overlay');
+            if (flashOverlay) {
+                flashOverlay.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>

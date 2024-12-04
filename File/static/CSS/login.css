@@ -1,0 +1,108 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #000000;
+  /* Original background color */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  /* Ensure full height of viewport */
+  transition: background-color 1s ease;
+  /* Smooth transition for background color */
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  background: url('/static/Image_Logo/Logo/sancs.gif') no-repeat center center fixed;
+  background-size: contain;
+  /* Adjust to 'cover', 'contain', or specific dimensions */
+  background-position: center;
+  /* Center the image within the div */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  /* Ensure overlay is above other content */
+}
+
+.login-container {
+  max-width: 400px;
+  width: 100%;
+  margin: auto;
+  /* Center horizontally */
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.login-container.show {
+  display: block;
+  /* Show login container when .show class is added */
+}
+
+.login-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.input-container {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.input-container input {
+  width: 95%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.input-container .fa {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.-link {
+  text-align: center;
+  margin-top: 5px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.-link p {
+  margin: 0;
+}
+
+.footer {
+  text-align: center;
+  padding: 10px 0;
+  color: #333;
+  /* Footer text color */
+}

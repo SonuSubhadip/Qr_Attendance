@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SCAN QR</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/scn_qr.css') }}">
+</head>
+
+<body>
+    <div id="content">
+        <div id="center-content">
+            <p id="message">NAMASTE, WELCOME TO [COMPANY], SCAN YOUR QR.</p>
+            <form id="scanForm" onsubmit="startCapture(event)">
+                <button type="submit">Scan</button>
+            </form>
+            <video id="video" width="640" height="480" autoplay></video>
+            <canvas id="canvas" style="display: none;"></canvas>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <b>Powered by ❤️ Sancs Technology</b>
+    </footer>
+
+    <script>
+        let video = document.getElementById('video');
+        let message = document.getElementById('message');
+        let stream;
+        let captureInterval;
+        let captureTimeout;
+
+        function startVideo() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (mediaStream) {
+                    stream = mediaStream;
+                    video.srcObject = stream;
+                    video.style.display = 'block'; // Show video when capture starts
+                    video.play();
+                })
+                .catch(function (err) {
+                    console.log("An error occurred: " + err);
+                });
+        }
+
+        function stopVideo() {
+            if (stream) {
+                let tracks = stream.getTracks();
+                tracks.forEach(track => track.stop());
+            }
+            video.style.display = 'none'; // Hide video when capture stops
+            clearInterval(captureInterval);
+            clearTimeout(captureTimeout);
+        }
+
+        function startCapture(event) {
+            event.preventDefault();
+            message.textContent = '';
+            message.className = '';
+            startVideo();
+            captureInterval = setInterval(captureImage, 500); // Capture image every 500ms
+            captureTimeout = setTimeout(() => {
+                stopVideo();
+                message.textContent = 'Scan timed out. Please try again.';
+                message.className = 'error';
+                // Reset message after 30 seconds
+                setTimeout(() => {
+                    message.textContent = 'NAMASTE, WELCOME TO [COMPANY], SCAN YOUR QR.';
+                    message.className = '';
+                }, 30000);
+            }, 30000); // Stop capture after 30 seconds
+        }
+
+        function captureImage() {
+            let canvas = document.getElementById('canvas');
+            let context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            let dataURL = canvas.toDataURL('image/png');
+            sendImage(dataURL);
+        }
+
+        function sendImage(dataURL) {
+            fetch("{{ url_for('scan') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ image: dataURL }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        stopVideo();
+                        message.textContent = data.message;
+                        message.className = 'success';
+                    } else {
+                        if (data.message.includes('Scanning..')) {
+                            message.textContent = data.message;
+                            message.className = 'error';
+                        } else {
+                            message.textContent = data.message;
+                            message.className = 'error';
+                            stopVideo();
+                        }
+                    }
+                    // Hide the message after 30 seconds
+                    setTimeout(() => {
+                        message.textContent = 'NAMASTE, WELCOME TO [COMPANY], SCAN YOUR QR.';
+                        message.className = '';
+                    }, 30000);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    message.textContent = 'Scanning..';
+                    message.className = '';
+                    // Hide the message after 30 seconds
+                    setTimeout(() => {
+                        message.textContent = 'NAMASTE, WELCOME TO [COMPANY], SCAN YOUR QR.';
+                        message.className = '';
+                    }, 30000);
+                });
+        }
+
+
+        let myDocument = document.documentElement;
+        function fullScreen() {
+            if (myDocument.requestFullscreen) {
+                myDocument.requestFullscreen();
+            } else if (myDocument.mozRequestFullScreen) { /* Firefox */
+                myDocument.mozRequestFullScreen();
+            } else if (myDocument.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+                myDocument.webkitRequestFullscreen();
+            } else if (myDocument.msRequestFullscreen) { /* IE/Edge */
+                myDocument.msRequestFullscreen();
+            }
+        }
+
+        window.onclick = function (event) {
+            fullScreen();
+        }
+    </script>
+</body>
+
+</html>

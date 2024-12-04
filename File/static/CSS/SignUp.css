@@ -1,0 +1,108 @@
+/* Reset default margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #d3d3ff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  /* Ensure full height of viewport */
+}
+
+.signup-container {
+  max-width: 400px;
+  width: 100%;
+  margin: auto;
+  /* Center horizontally */
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+ /*.signup-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}*/
+
+.signup-form h2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.input-container {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.input-container input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.input-container .fa {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  /* Blue color for sign up */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #0056b3;
+  /* Darker blue on hover */
+}
+
+.-link {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.-link p {
+  margin: 0;
+}
+
+
+
+.signup-form h2 a {
+  font-size: inherit; /* Ensures the icon matches the text size */
+  color: inherit;     /* Matches the text color of the heading */
+}
+
+.signup-form h2 i {
+  margin-left: 10px; /* Optional spacing for better alignment */
+}
+
+.footer {
+  text-align: center;
+  padding: 10px 0;
+  /* background-color: #ddd;  /* Footer background color */
+  color: #333;
+  /* Footer text color */
+  /*border-top: 1px solid #ccc; /* Separator line */
+}

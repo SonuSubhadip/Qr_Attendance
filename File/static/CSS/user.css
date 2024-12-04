@@ -1,0 +1,369 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #d3d3ff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+h1,
+h2 {
+    color: #333;
+}
+
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transform: 0.6s;
+    padding: 40px, 100px;
+    background-color: #444;
+    z-index: 100000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+header .logo {
+    position: relative;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    font-size: 2em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-right: 50px;
+    transition: 0.6s;
+}
+
+header ul {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 550px;
+}
+
+header ul li {
+    position: relative;
+    list-style: none;
+    cursor: pointer;
+}
+
+header ul li a {
+    position: relative;
+    text-decoration: none;
+    text-transform: uppercase;
+    margin: 0 15px;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 2px;
+    transition: 0.6s;
+}
+
+header ul li a:hover {
+    color: rgb(134, 255, 215);
+}
+
+header ul li #log {
+    font-weight: 600;
+    color: rgb(255, 34, 34);
+}
+
+/* Sidebar Styling */
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #444;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidebar-content {
+    color: #fff;
+    text-align: center;
+}
+
+.sidebar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #f8f8f8;
+    display: block;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.6s;
+}
+
+.sidebar a:hover {
+    color: #6b6b6b;
+}
+
+.sidebar #log {
+    color: rgb(255, 34, 34);
+}
+
+.sidebar .closebtn {
+    position: absolute;
+    top: 45px;
+    right: 20px;
+    font-size: 30px;
+    margin-left: 50px;
+    background: none;
+    border: none;
+    color: #ff0000;
+    cursor: pointer;
+}
+
+.button {
+    padding: 5px 10px;
+    text-decoration: none;
+    border: 2px solid rgb(39, 111, 245);
+    box-shadow: 0 0 20px rgba(39, 111, 245, 0.8);
+    background-color: #0179e9;
+    border-radius: 15px;
+    color: rgb(253, 253, 253);
+}
+
+.button:hover {
+    background-color: #98effa;
+    color: rgb(62, 17, 224);
+}
+
+#del {
+    border: 2px solid rgb(255, 0, 0);
+    box-shadow: 0 0 20px rgba(255, 8, 0, 0.8);
+    background-color: #f52f0c;
+}
+
+#del:hover {
+    background-color: #ffdfdf;
+    color: rgb(255, 0, 0);
+}
+
+/* Button Styling */
+.openbtn {
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    background-color: #444;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    /* margin-left: 15px; */
+    transition: 0.6s;
+}
+
+.openbtn:hover {
+    background-color: #c5c5c5;
+}
+
+.main {
+    padding: 110px;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+table th,
+table td {
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #d1cdcd;
+    font-weight: bold;
+    padding: 15px;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.active-status {
+    color: green;
+    font-weight: bold;
+}
+
+.inactive-status {
+    color: red;
+    font-weight: bold;
+}
+
+/* Form Styling */
+form {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: auto;
+}
+
+form label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+form input[type="text"] {
+    width: calc(100% - 22px);
+    /* Adjusted width considering input padding and border */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    /* New button color */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #0056b3;
+    /* Darker color on hover */
+}
+
+a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+
+
+/* Input Container Styling */
+.input-container {
+    display: flex;
+    align-items: center;
+}
+
+.input-container label {
+    margin-right: 30px;
+    /* Adjust spacing between label and select dropdown */
+}
+
+/* Flash Message List Styling */
+#flash-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.flashes {
+    list-style-type: none;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    max-width: 80%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.flashes li {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.flashes li.success {
+    background-color: #d4edda;
+    color: #155724;
+    font-weight: 700;
+    border: 1px solid #c3e6cb;
+}
+
+.flashes li.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    font-weight: 700;
+    border: 1px solid #f5c6cb;
+}
+
+.hidden {
+    opacity: 0;
+}
+
+/* .footer {
+  text-align: center;
+  padding: 100px 0px;
+  color: #333; /* Footer text color 
+} */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+    border-radius: 15px;
+    margin: 10% auto;
+    padding: 10px;
+    border: 1px solid #888;
+    width: 45%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-color: #fefefe;
+}
+.modal-content input{
+    border-radius: 5px;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

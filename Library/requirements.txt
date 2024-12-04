@@ -1,0 +1,5 @@
+flask
+pandas
+qrcode[pil]
+opencv-python
+pyzbar

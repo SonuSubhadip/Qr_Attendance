@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="../static/CSS/login.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+  <div class="overlay" id="splash-screen">
+  </div>
+
+  <div class="login-container" id="main-content">
+    <!-- Main content (login form and footer) -->
+    {% if show_signup_link %}
+    <div class="-link">
+      No Users Found! <a href="/signup">SignUp Now.</a>
+    </div>
+    {% else %}
+    <form method="POST" class="login-form" action="{{ url_for('login') }}">
+      <input type="hidden" name="next" value="{{ next }}">
+      <h2>NAMASTE</h2>
+      {% if error %}
+      <p style="color: red; text-align: center;">{{ error }}</p>
+      {% endif %}
+      <div class="input-container">
+        <input type="text" name="username" id="username" placeholder="Username" required>
+      </div>
+      <div class="input-container">
+        <input type="password" name="password" id="password" placeholder="Password" required>
+        <span class="toggle-password" onclick="togglePassword()">
+          <i class="fa fa-eye" id="show-password-icon" style="display:none;"></i>
+        </span>
+      </div>
+      <button type="submit">Log In</button>
+    </form>
+    <br>
+
+    {% endif %}
+
+  </div>
+
+  <footer class="footer">
+    <b>Powered by ❤️ Sancs Technology</b>
+  </footer>
+
+  <script>
+    // Simulate a delay for splash screen (3 seconds)
+    setTimeout(function () {
+      document.getElementById('splash-screen').style.display = 'none'; // Hide splash screen
+      document.body.style.backgroundColor = '#d3d3ff'; // Restore original background color
+      document.getElementById('main-content').classList.add('show'); // Show main content
+    }, 1500); // Adjust delay as needed (in milliseconds)
+
+    function togglePassword() {
+      var passwordBox = document.getElementById("password");
+      var showPasswordIcon = document.getElementById("show-password-icon");
+
+      if (passwordBox.type === "password") {
+        passwordBox.type = "text";
+        showPasswordIcon.classList.remove("fa fa-eye");
+        showPasswordIcon.classList.add("fa fa-eye-slash");
+      } else {
+        passwordBox.type = "password";
+        showPasswordIcon.classList.remove("fa fa-eye-slash");
+        showPasswordIcon.classList.add("fa fa-eye");
+      }
+    }
+  </script>
+</body>
+
+</html>
+
+</html>
