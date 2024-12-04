@@ -17,12 +17,6 @@ This project is a Gym/School Access and Attendance System built entirely using P
 ## Attendance Tracking
 - Keep track of attendance records for each user.
 - Automatically mark attendance upon successful QR validation.
-## Requirements
-Python Dependencies
-Install required libraries using
-```bash
-pip install -r library/requirements.txt
-```
 
 ## How to Use
 ### 1. Clone the repository:
@@ -30,18 +24,23 @@ pip install -r library/requirements.txt
 git repo clone SonuSubhadip/Qr_Attendance
 cd Qr_Attendance
 ```
+### 2 Requirements Python Dependencies
+Install required libraries using
+```bash
+pip install -r library/requirements.txt
+```
 
-### 2. Run the Flask application:
+### 3. Run the Flask application:
 ```bash
 python Attendence.py
 ```
 
-### 3. Open the application in your browser:
+### 4. Open the application in your browser:
 ```bash
 http://127.0.0.1:5000/
 ```
 
-### 4. Use the interface to:
+### 5. Use the interface to:
 - Register users
 - Manage payments
 - Download QR codes
