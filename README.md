@@ -56,6 +56,4 @@ Home Screen 👇
 ## License
 This project is licensed under the MIT License.
 
-##
-With this README.md, anyone visiting your GitHub project will understand what it's about and how to use it. Let me know if you need help adding anything!
 
