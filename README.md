@@ -47,7 +47,8 @@ http://127.0.0.1:5000/
 - Track attendance
 
 ## Important
-Installed MICROSOFT VISUAL C++ REDISTRIBUTABLE FOR VISUAL STUDIO 2013 
+Before running the project, make sure to download and install the required software from the following link:
+[Download Microsoft Visual C++ Redistributable](https://www.microsoft.com/en-in/download/details.aspx?id=40784)
 
 ## Screenshots
 Home Screen 👇
